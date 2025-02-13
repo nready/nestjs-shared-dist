@@ -1,0 +1,34 @@
+{
+  "name": "@nready/shared",
+  "version": "0.0.1",
+  "description": "Common Lib for Nestjs project",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [
+    "nestjs",
+    "nready"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nready/nestjs-shared-dist.git"
+  },
+  "author": {
+    "name": "Le Quoc Nam",
+    "email": "leqnam@live.com",
+    "url": "https://nready.net"
+  },
+  "license": "MIT"
+}
