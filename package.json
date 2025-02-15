@@ -1,6 +1,6 @@
 {
   "name": "@nready/shared",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Common Lib for Nestjs project",
   "main": "dist/index.js",
   "exports": {
