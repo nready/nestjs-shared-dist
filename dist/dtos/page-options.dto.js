@@ -21,7 +21,9 @@ class PageOptionsDto {
         this.take = 10;
     }
     get skip() {
-        return (this.page - 1) * this.take;
+        const page = this.page || 0;
+        const take = this.take || 1;
+        return (page - 1) * take;
     }
 }
 exports.PageOptionsDto = PageOptionsDto;

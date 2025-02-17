@@ -11,9 +11,8 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 let LoggerMiddleware = class LoggerMiddleware {
     use(req, res, next) {
-        var _a;
         res.setHeader('X-Powered-By', 'NREADY LAB');
-        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+        const token = req.headers.authorization?.split(' ')[1];
         if (token && token != 'null') {
             const jwtService = new jwt_1.JwtService();
             const decoded = jwtService.decode(token);

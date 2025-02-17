@@ -7,11 +7,6 @@ export declare class UtilsService {
     static generateRandomString(length: number): string;
     static getAge(d1: Date, d2?: Date): number;
     static capitalizeName(name: string): string;
-    /**
-     * encode (hash) text to sha256
-     * @param {string} text
-     * @returns {string}
-     */
     static encodeString(text: string): string;
     static mergeObject: (A: any, B: any) => any;
     static getLocaleDate: (isoString: string, timeZone?: string) => string;

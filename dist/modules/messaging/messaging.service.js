@@ -49,23 +49,21 @@ const amqp = __importStar(require("amqplib"));
 const constants_1 = require("../../constants");
 let MessagingService = class MessagingService {
     constructor() { }
-    // Method to initialize a dynamic client proxy based on a dynamic queue name
     createClientProxy(queueName) {
         return microservices_1.ClientProxyFactory.create({
             transport: microservices_1.Transport.RMQ,
             options: {
-                urls: [constants_1.environment.rabbitmq], // Replace with your RabbitMQ URL
+                urls: [constants_1.environment.rabbitmq],
                 queue: queueName,
                 queueOptions: {
                     durable: true,
                     arguments: {
-                        'x-message-ttl': constants_1.environment.rabbitmqTtl, // Message TTL in milliseconds
+                        'x-message-ttl': constants_1.environment.rabbitmqTtl,
                     },
                 },
             },
         });
     }
-    // Method to emit a message to a dynamic queue
     async emit(queueName, message) {
         this.client = this.createClientProxy(constants_1.environment.rabbitmqName);
         await this.client.connect();

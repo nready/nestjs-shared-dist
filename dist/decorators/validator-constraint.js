@@ -35,7 +35,6 @@ exports.GreaterOrEqualDate = GreaterOrEqualDate = __decorate([
 let IsFutureDate = class IsFutureDate {
     validate(date) {
         const currentDate = new Date(date);
-        // Set the hours and minutes to the last hour of the day
         currentDate.setHours(23);
         currentDate.setMinutes(59);
         return currentDate >= new Date();
@@ -51,7 +50,6 @@ exports.IsFutureDate = IsFutureDate = __decorate([
 ], IsFutureDate);
 let IsPhoneNumberConstraint = class IsPhoneNumberConstraint {
     validate(phoneNumber) {
-        // Regular expression for basic phone number validation
         const regex = constants_1.REGEX_VIETNAMESE_PHONE;
         return regex.test(phoneNumber);
     }

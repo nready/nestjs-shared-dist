@@ -21,13 +21,9 @@ let RedisService = class RedisService {
         this.redisClient = redisClient;
     }
     async setKey(key, value, ttlMinutes) {
-        //if (ttlMinutes) {
         ttlMinutes = ttlMinutes || +constants_1.environment.redisTtl;
         key = `${constants_1.environment.redisPrefix}:${key}`;
         await this.redisClient.set(key, value, 'EX', ttlMinutes * constants_1.RedisTTL.MINUTE);
-        // } else {
-        //   await this.redisClient.set(key, value);
-        // }
     }
     async getKey(key) {
         key = `${constants_1.environment.redisPrefix}:${key}`;

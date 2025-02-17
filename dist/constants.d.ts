@@ -15,19 +15,19 @@ export declare const environment: {
     host: string;
     rabbitmq: string;
     rabbitmqName: string;
-    rabbitmqTtl: number;
+    rabbitmqTtl: string | number;
     rabbitmqAck: string | boolean;
     redisHost: string;
-    redisPort: number;
-    redisPrefix: string | number;
-    redisTtl: number;
+    redisPort: string | number;
+    redisPrefix: string;
+    redisTtl: string | number;
 };
 export declare const dbConfig: {
-    port: string;
-    host: string;
-    username: string;
-    database: string;
-    schema: string;
+    port: string | undefined;
+    host: string | undefined;
+    username: string | undefined;
+    database: string | undefined;
+    schema: string | undefined;
     password: string;
 };
 export declare const REGEX_DATE_YYYY_MM_DD: RegExp;
@@ -40,16 +40,10 @@ export declare enum Sort {
     ASC = "ASC",
     DESC = "DESC"
 }
-/**
- * Enum representation allowed combination query
- */
 export declare enum CombineQueryOption {
     AND = "AND",
     OR = "OR"
 }
-/**
- * Enum representation allowed comparison array type when request
- */
 export declare enum SearchArrayOption {
     in = "in",
     notIn = "notIn",

@@ -3,4 +3,5 @@ export declare class HistoryEntitySubscriber implements EntitySubscriberInterfac
     afterInsert(event: InsertEvent<any>): Promise<void>;
     afterUpdate(event: UpdateEvent<any>): Promise<void>;
     afterSoftRemove(event: SoftRemoveEvent<any>): Promise<void>;
+    private handleHistoryInsert;
 }

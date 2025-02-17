@@ -18,9 +18,7 @@ let HttpExceptionFilter = class HttpExceptionFilter {
             : common_1.HttpStatus.INTERNAL_SERVER_ERROR;
         const isShowDetailErrMsg = process.env.SHOW_DETAIL_ERRMSG;
         response.status(common_1.HttpStatus.OK).json({
-            // response.json({
-            // eslint-disable-next-line prettier/prettier
-            message: (isShowDetailErrMsg == 'true' ? exception === null || exception === void 0 ? void 0 : exception.getResponse()["message"] : exception === null || exception === void 0 ? void 0 : exception.message) || null,
+            message: (isShowDetailErrMsg == 'true' ? exception?.getResponse()["message"] : exception?.message) || null,
             statusCode: status + '',
             timestamp: utils_service_1.UtilsService.getLocaleDate(new Date().toISOString()),
         });
@@ -30,17 +28,3 @@ exports.HttpExceptionFilter = HttpExceptionFilter;
 exports.HttpExceptionFilter = HttpExceptionFilter = __decorate([
     (0, common_1.Catch)(common_1.HttpException)
 ], HttpExceptionFilter);
-/*
-Usage: ping nam or ref:
-    @Post()
-    @UseFilters(new HttpExceptionFilter())
-    async create(@Body() createCatDto: CreateCatDto) {
-    throw new ForbiddenException();
-    }
-
-or:
-
-    @UseFilters(new HttpExceptionFilter())
-    export class CatsController {}
-
-*/

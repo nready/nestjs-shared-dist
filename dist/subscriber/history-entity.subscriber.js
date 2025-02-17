@@ -11,19 +11,29 @@ const typeorm_1 = require("typeorm");
 const entity_history_decorator_1 = require("../decorators/entity-history.decorator");
 let HistoryEntitySubscriber = class HistoryEntitySubscriber {
     async afterInsert(event) {
-        const historyEntity = Reflect.getMetadata(entity_history_decorator_1.hisEntityMetadataKey, event.metadata.target);
-        if (historyEntity)
-            await event.manager.getRepository(historyEntity).insert(event.entity);
+        await this.handleHistoryInsert(event);
     }
     async afterUpdate(event) {
-        const historyEntity = Reflect.getMetadata(entity_history_decorator_1.hisEntityMetadataKey, event.metadata.target);
-        if (historyEntity)
-            await event.manager.getRepository(historyEntity).insert(event.entity);
+        await this.handleHistoryInsert(event);
     }
     async afterSoftRemove(event) {
-        const historyEntity = Reflect.getMetadata(entity_history_decorator_1.hisEntityMetadataKey, event.metadata.target);
-        if (historyEntity)
-            await event.manager.getRepository(historyEntity).insert(event.entity);
+        await this.handleHistoryInsert(event);
+    }
+    async handleHistoryInsert(event) {
+        try {
+            const historyEntity = Reflect.getMetadata(entity_history_decorator_1.hisEntityMetadataKey, event.metadata.target);
+            if (!historyEntity)
+                return;
+            if (!event.entity)
+                return;
+            const historyRepo = event.manager.getRepository(historyEntity);
+            if (!historyRepo)
+                return;
+            await historyRepo.insert(event.entity);
+        }
+        catch (error) {
+            console.error(`HistoryEntitySubscriber Error:`, error);
+        }
     }
 };
 exports.HistoryEntitySubscriber = HistoryEntitySubscriber;

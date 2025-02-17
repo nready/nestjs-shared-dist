@@ -30,16 +30,16 @@ exports.jwtConstants = {
 };
 exports.environment = {
     port: Number(process.env.PORT) || 3000,
-    env: process.env.NODE_ENV,
+    env: process.env.NODE_ENV || 'development',
     host: '',
-    rabbitmq: process.env.RABBITMQ_URL,
-    rabbitmqName: process.env.RABBITMQ_QUEUE_NAME,
-    rabbitmqTtl: +process.env.RABBITMQ_TTL || 3600000,
+    rabbitmq: process.env.RABBITMQ_URL || 'amqp://localhost:5672',
+    rabbitmqName: process.env.RABBITMQ_QUEUE_NAME || 'RND',
+    rabbitmqTtl: process.env.RABBITMQ_TTL || 3600000,
     rabbitmqAck: process.env.RABBITMQ_ACK || false,
     redisHost: process.env.REDIS_HOST || 'localhost',
-    redisPort: +process.env.REDIS_PORT || 6379,
-    redisPrefix: +process.env.REDIS_PREFIX || 'RND',
-    redisTtl: +process.env.REDIS_TTL || 5,
+    redisPort: process.env.REDIS_PORT || 6379,
+    redisPrefix: process.env.REDIS_PREFIX || 'RND',
+    redisTtl: process.env.REDIS_TTL || 5,
 };
 exports.dbConfig = {
     port: process.env.DB_PORT,
@@ -49,12 +49,9 @@ exports.dbConfig = {
     schema: process.env.DB_SCHEMA,
     password: '' + process.env.DB_PASSWORD,
 };
-// eslint-disable-next-line prettier/prettier
-// export const dbUrl = 'postgres://'+process.env.DB_USER+':'+process.env.DB_PWD+'@'+process.env.DB_HOST+':'+process.env.DB_PORT+'/'+process.env.DB_NAME;
-exports.REGEX_DATE_YYYY_MM_DD = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/; //ss
-exports.REGEX_WHITESPACE_FIELD = /^\s+$/; // Không chứa toàn bộ khoảng trắng
-exports.REGEX_NORMAL_FIELD = /^[a-z0-9A-Z\s&_-\u00C0-\u1EF9]+$/; // không ký tự đặc biệt trừ &-_
-// eslint-disable-next-line prettier/prettier
+exports.REGEX_DATE_YYYY_MM_DD = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+exports.REGEX_WHITESPACE_FIELD = /^\s+$/;
+exports.REGEX_NORMAL_FIELD = /^[a-z0-9A-Z\s&_-\u00C0-\u1EF9]+$/;
 exports.REGEX_VIETNAMESE_PHONE = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/m;
 exports.DATE_FORMAT = `yyyy-MM-DDTHH:mm:ss.SSSZ`;
 exports.DEFAULT_RESPONSE = {
@@ -67,17 +64,11 @@ var Sort;
     Sort["ASC"] = "ASC";
     Sort["DESC"] = "DESC";
 })(Sort || (exports.Sort = Sort = {}));
-/**
- * Enum representation allowed combination query
- */
 var CombineQueryOption;
 (function (CombineQueryOption) {
     CombineQueryOption["AND"] = "AND";
     CombineQueryOption["OR"] = "OR";
 })(CombineQueryOption || (exports.CombineQueryOption = CombineQueryOption = {}));
-/**
- * Enum representation allowed comparison array type when request
- */
 var SearchArrayOption;
 (function (SearchArrayOption) {
     SearchArrayOption["in"] = "in";

@@ -18,7 +18,6 @@ let AbstractSearchService = class AbstractSearchService {
     constructor(repository) {
         this.repository = repository;
     }
-    // protected abstract queryBuilder(model: S): SelectQueryBuilder<T>;
     async paginate(model) {
         const itemCount = await this.repository.countBy(this.queryBuilder(model));
         const data = await this.repository.find({

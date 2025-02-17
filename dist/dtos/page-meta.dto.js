@@ -14,7 +14,7 @@ const swagger_1 = require("@nestjs/swagger");
 class PageMetaDto {
     constructor({ pageOptionsDto, itemCount }) {
         this.page = pageOptionsDto.page;
-        this.take = pageOptionsDto.take;
+        this.take = pageOptionsDto.take || 1;
         this.itemCount = itemCount;
         this.pageCount = Math.ceil(itemCount / this.take);
     }

@@ -73,11 +73,6 @@ class UtilsService {
     static capitalizeName(name) {
         return _.capitalize(name);
     }
-    /**
-     * encode (hash) text to sha256
-     * @param {string} text
-     * @returns {string}
-     */
     static encodeString(text) {
         return crypto.createHash('sha256').update(text).digest('hex');
     }
@@ -90,19 +85,7 @@ UtilsService.mergeObject = (A, B) => {
         }
         return result;
     }, { ...A });
-    // const res = {};
-    // Object.keys({ ...A, ...B }).map(key => {
-    //   res[key] = B[key] || A[key];
-    // });
-    // return res;
-    // B = Object.keys(B).forEach(key => {
-    //   if (B[key] === undefined) {
-    //     delete B[key];
-    //   }
-    // });
-    // return Object.assign(A, B);
 };
-// Parse ISO 8601 date (UTC by default)
 UtilsService.getLocaleDate = (isoString, timeZone) => {
     return (0, moment_timezone_1.default)(isoString)
         .tz(timeZone || 'Asia/Ho_Chi_Minh')

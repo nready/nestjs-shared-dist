@@ -23,12 +23,19 @@ exports.RedisModule = RedisModule = __decorate([
         providers: [
             {
                 provide: 'REDIS_CLIENT',
-                useFactory: () => {
-                    return new ioredis_1.default({
+                useFactory: async () => {
+                    const client = new ioredis_1.default({
                         host: constants_1.environment.redisHost,
-                        port: constants_1.environment.redisPort,
-                        // password: process.env.REDIS_PASSWORD,
+                        port: Number(constants_1.environment.redisPort),
+                        retryStrategy: times => Math.min(times * 50, 2000),
                     });
+                    client.on('error', err => {
+                        console.error('❌ Redis Connection Error:', err);
+                    });
+                    client.on('connect', () => {
+                        console.log('✅ Redis Connected Successfully');
+                    });
+                    return client;
                 },
             },
             redis_service_1.RedisService,

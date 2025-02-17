@@ -17,7 +17,6 @@ const typeorm_1 = require("typeorm");
 const utils_service_1 = require("../services/utils.service");
 const helper_1 = require("../helper");
 class AbstractEntity {
-    // abstract dtoClass: new (entity: AbstractEntity<any>, options?: any) => T;
     toDto(options) {
         return utils_service_1.UtilsService.toDto(this.dtoClass, this, options);
     }
@@ -26,7 +25,7 @@ exports.AbstractEntity = AbstractEntity;
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
         name: 'createDate',
-        type: 'timestamp with time zone', // Ensure PostgreSQL stores with timezone info
+        type: 'timestamp with time zone',
         default: () => 'CURRENT_TIMESTAMP',
         nullable: true,
         comment: 'Ngày giờ khởi tạo',
@@ -38,36 +37,32 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({
         name: 'effectDate',
-        type: 'timestamp with time zone', // Ensure PostgreSQL stores with timezone info
+        type: 'timestamp with time zone',
         nullable: true,
         comment: 'Ngày bắt đầu có hiệu lực',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Date),
-    (0, classes_1.AutoMap)()
-    // @Validate(IsFutureDate)
-    ,
+    (0, classes_1.AutoMap)(),
     __metadata("design:type", Date)
 ], AbstractEntity.prototype, "effectDate", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         name: 'inactiveDate',
-        type: 'timestamp with time zone', // Ensure PostgreSQL stores with timezone info
+        type: 'timestamp with time zone',
         nullable: true,
         comment: 'Ngày hết hiệu lực',
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Date),
-    (0, classes_1.AutoMap)()
-    // @Validate(GreaterOrEqualDate, ['effect_date'])
-    ,
+    (0, classes_1.AutoMap)(),
     (0, class_transformer_1.Transform)(date => (0, helper_1.transformEndOfDate)(date.value)),
     __metadata("design:type", Date)
 ], AbstractEntity.prototype, "inactiveDate", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)({
         name: 'dateLastMaint',
-        type: 'timestamp with time zone', // Ensure PostgreSQL stores with timezone info
+        type: 'timestamp with time zone',
         default: () => 'CURRENT_TIMESTAMP',
         nullable: true,
         comment: 'Ngày giờ cập nhật',

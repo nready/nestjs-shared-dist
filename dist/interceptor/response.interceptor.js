@@ -14,15 +14,12 @@ const constants_1 = require("../constants");
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
         const resp = context.switchToHttp().getResponse();
-        // const request = context.switchToHttp().getRequest();
-        // Extract query parameters for paging (e.g., page and pageSize)
         return next.handle().pipe((0, operators_1.map)((data) => {
-            // if data res is a file.
             if (data && data.stream) {
                 return data;
             }
             const res = { ...constants_1.DEFAULT_RESPONSE };
-            if (data === null || data === void 0 ? void 0 : data.pageMeta) {
+            if (data?.pageMeta) {
                 res.pageMeta = data.pageMeta;
                 res.responseBody = data.data;
             }

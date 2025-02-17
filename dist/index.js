@@ -15,7 +15,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./shared-lib.module"), exports);
-// export * from './shared-lib.service';
 __exportStar(require("./constants"), exports);
 __exportStar(require("./helper"), exports);
 __exportStar(require("./entities/abstract.entity"), exports);
@@ -36,7 +35,6 @@ __exportStar(require("./interceptor/logging.interceptor"), exports);
 __exportStar(require("./interceptor/response.interceptor"), exports);
 __exportStar(require("./interfaces/token"), exports);
 __exportStar(require("./middleware/logger.middleware"), exports);
-// export * from './services/search.service';
 __exportStar(require("./services/abstract-search.service"), exports);
 __exportStar(require("./services/utils.service"), exports);
 __exportStar(require("./subscriber/history-entity.subscriber"), exports);

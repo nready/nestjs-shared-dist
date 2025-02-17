@@ -17,10 +17,8 @@ class AbstractSearchDto {
     get page() {
         return this._page;
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     set page(value) {
-        this._page = value !== null && value !== void 0 ? value : 0;
+        this._page = value ?? 0;
     }
     get take() {
         return this._take;

@@ -21,14 +21,13 @@ let LoggingInterceptor = class LoggingInterceptor {
         console.log('Before...');
         const now = Date.now();
         return next.handle().pipe((0, operators_1.tap)(data => {
-            console.log(`After...\n ${Date.now() - now}ms`, data, userAgent); // you can use any logger like winston
+            console.log(`After...\n ${Date.now() - now}ms`, data, userAgent);
         }), (0, operators_1.catchError)(err => {
-            const errObj = (err === null || err === void 0 ? void 0 : err.response) || err;
+            const errObj = err?.response || err;
             console.log('Error caught from interceptor:\n', errObj);
-            // throw err;
             return (0, rxjs_1.of)({
                 statusCode: common_1.HttpStatus.OK,
-                message: errObj.message || 'An error occurred'
+                message: errObj.message || 'An error occurred',
             });
         }));
     }
