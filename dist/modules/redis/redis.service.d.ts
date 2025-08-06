@@ -1,6 +1,8 @@
 import { Redis } from 'ioredis';
 export declare class RedisService {
     private readonly redisClient;
+    private readonly logger;
+    private isRedisAvailable;
     constructor(redisClient: Redis);
     setKey(key: string, value: string, ttlMinutes?: number): Promise<void>;
     getKey(key: string): Promise<string | null>;

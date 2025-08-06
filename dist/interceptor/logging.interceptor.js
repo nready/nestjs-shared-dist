@@ -26,7 +26,8 @@ let LoggingInterceptor = class LoggingInterceptor {
             const errObj = err?.response || err;
             console.log('Error caught from interceptor:\n', errObj);
             return (0, rxjs_1.of)({
-                statusCode: common_1.HttpStatus.OK,
+                error: errObj.error || null,
+                statusCode: errObj.statusCode,
                 message: errObj.message || 'An error occurred',
             });
         }));

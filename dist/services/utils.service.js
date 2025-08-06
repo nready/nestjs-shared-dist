@@ -76,6 +76,30 @@ class UtilsService {
     static encodeString(text) {
         return crypto.createHash('sha256').update(text).digest('hex');
     }
+    static transformEndOfDate(date) {
+        if (!date || date === 'null')
+            return new Date();
+        const newDate = new Date(date);
+        newDate.setHours(23, 59, 59, 999);
+        return newDate;
+    }
+    static isFutureDate(value) {
+        const futureDate = this.transformEndOfDate(new Date(value));
+        const currentDate = new Date();
+        return futureDate.getTime() > currentDate.getTime();
+    }
+    static isActiveByDate(effectDate, inactiveDate) {
+        return (!this.isNullOrUndefined(effectDate) &&
+            effectDate < new Date() &&
+            (this.isNullOrUndefined(inactiveDate) ||
+                inactiveDate > new Date()));
+    }
+    static base64Encode(text) {
+        return Buffer.from(text).toString('base64');
+    }
+    static base64Decode(text) {
+        return Buffer.from(text).toString('ascii');
+    }
 }
 exports.UtilsService = UtilsService;
 UtilsService.mergeObject = (A, B) => {
@@ -90,4 +114,26 @@ UtilsService.getLocaleDate = (isoString, timeZone) => {
     return (0, moment_timezone_1.default)(isoString)
         .tz(timeZone || 'Asia/Ho_Chi_Minh')
         .format(constants_1.DATE_FORMAT);
+};
+UtilsService.cleanNullObject = (obj) => {
+    Object.keys(obj).forEach(key => {
+        const typedKey = key;
+        if (obj[typedKey] === null ||
+            obj[typedKey] === '' ||
+            obj[typedKey] === undefined) {
+            delete obj[typedKey];
+        }
+    });
+    return obj;
+};
+UtilsService.isNullOrUndefined = (value) => {
+    return value == null || value == undefined;
+};
+UtilsService.randomString = (length = 60) => {
+    let output = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < length; i++) {
+        output += characters[Math.floor(Math.random() * length)];
+    }
+    return output;
 };

@@ -15,3 +15,4 @@ export declare function convertToAscii(str: string): number;
 export declare const cleanNullObject: <T>(obj: any) => T;
 export declare const isNullable: (value: any) => boolean;
 export declare function isFutureDate(value: any): boolean;
+export declare function isActiveByDate(effectDate: Date, inactiveDate: Date): boolean;

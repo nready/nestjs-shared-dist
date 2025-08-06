@@ -9,6 +9,6 @@ export declare abstract class AbstractEntity<T extends AbstractDto = AbstractDto
     editedBy?: string;
     approvedBy?: string;
     note?: string;
-    abstract dtoClass: new (entity: AbstractEntity, options?: any) => T;
+    dtoClass?: new (entity: AbstractEntity, options?: any) => T;
     toDto(options?: any): T;
 }

@@ -41,51 +41,96 @@ var __importStar = (this && this.__importStar) || (function () {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var MessagingService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessagingService = void 0;
 const common_1 = require("@nestjs/common");
 const microservices_1 = require("@nestjs/microservices");
 const amqp = __importStar(require("amqplib"));
 const constants_1 = require("../../constants");
-let MessagingService = class MessagingService {
-    constructor() { }
-    createClientProxy(queueName) {
-        return microservices_1.ClientProxyFactory.create({
-            transport: microservices_1.Transport.RMQ,
-            options: {
-                urls: [constants_1.environment.rabbitmq],
-                queue: queueName,
-                queueOptions: {
-                    durable: true,
-                    arguments: {
-                        'x-message-ttl': constants_1.environment.rabbitmqTtl,
+let MessagingService = MessagingService_1 = class MessagingService {
+    constructor() {
+        this.isConnected = false;
+        this.logger = new common_1.Logger(MessagingService_1.name);
+        this.ensureConnection();
+    }
+    async ensureConnection() {
+        if (this.isConnected)
+            return;
+        try {
+            this.client = microservices_1.ClientProxyFactory.create({
+                transport: microservices_1.Transport.RMQ,
+                options: {
+                    urls: [constants_1.environment.rabbitmq],
+                    queue: constants_1.environment.rabbitmqName,
+                    queueOptions: {
+                        durable: true, autoDelete: false,
+                        arguments: {
+                            'x-message-ttl': +constants_1.environment.rabbitmqTtl,
+                        },
                     },
                 },
-            },
-        });
+            });
+            await this.client.connect();
+            this.isConnected = true;
+            this.logger.log('✅ Connected to RabbitMQ');
+        }
+        catch (error) {
+            this.isConnected = false;
+            this.logger.error(`❌ RabbitMQ Connection Failed: ${error.message}`);
+            setTimeout(() => this.ensureConnection(), 5000);
+        }
     }
     async emit(queueName, message) {
-        this.client = this.createClientProxy(constants_1.environment.rabbitmqName);
-        await this.client.connect();
-        this.client.emit(queueName || constants_1.environment.rabbitmqName, message);
+        await this.ensureConnection();
+        if (!this.isConnected) {
+            this.logger.warn('⚠️ Cannot send message: RabbitMQ is down');
+            return;
+        }
+        try {
+            const connection = await amqp.connect(constants_1.environment.rabbitmq);
+            const channel = await connection.createChannel();
+            await channel.assertQueue(queueName || constants_1.environment.rabbitmqName, {
+                durable: true,
+            });
+            channel.sendToQueue(queueName || constants_1.environment.rabbitmqName, Buffer.from(JSON.stringify(message)), {
+                persistent: true,
+            });
+            this.logger.log(`📤 Persistent message sent to ${queueName}`);
+            await channel.close();
+            await connection.close();
+        }
+        catch (error) {
+            this.logger.error(`❌ Failed to send message: ${error.message}`);
+        }
     }
     async overwriteQueue(queueName, message) {
-        const connection = await amqp.connect(constants_1.environment.rabbitmq);
-        const channel = await connection.createChannel();
-        await channel.assertQueue(constants_1.environment.rabbitmqName, {
-            durable: true,
-            arguments: {
-                'x-message-ttl': +constants_1.environment.rabbitmqTtl,
-            },
-        });
-        await channel.purgeQueue(constants_1.environment.rabbitmqName);
-        await this.emit(queueName, message);
-        await channel.close();
-        await connection.close();
+        await this.ensureConnection();
+        if (!this.isConnected) {
+            this.logger.warn('⚠️ Cannot overwrite queue: RabbitMQ is down');
+            return;
+        }
+        try {
+            const connection = await amqp.connect(constants_1.environment.rabbitmq);
+            const channel = await connection.createChannel();
+            await channel.assertQueue(constants_1.environment.rabbitmqName, {
+                durable: true, autoDelete: false,
+                arguments: {
+                    'x-message-ttl': +constants_1.environment.rabbitmqTtl,
+                },
+            });
+            await channel.purgeQueue(constants_1.environment.rabbitmqName);
+            await this.emit(queueName, message);
+            await channel.close();
+            await connection.close();
+        }
+        catch (error) {
+            this.logger.error(`❌ Failed to overwrite queue: ${error.message}`);
+        }
     }
 };
 exports.MessagingService = MessagingService;
-exports.MessagingService = MessagingService = __decorate([
+exports.MessagingService = MessagingService = MessagingService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], MessagingService);

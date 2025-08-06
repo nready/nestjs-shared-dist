@@ -1,7 +1,9 @@
 export declare class MessagingService {
     private client;
+    private isConnected;
+    private readonly logger;
     constructor();
-    private createClientProxy;
-    emit(queueName?: string, message?: any): Promise<void>;
+    private ensureConnection;
+    emit(queueName: string, message: any): Promise<void>;
     overwriteQueue(queueName: string, message: any): Promise<void>;
 }

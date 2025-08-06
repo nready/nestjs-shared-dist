@@ -13,9 +13,9 @@ const operators_1 = require("rxjs/operators");
 const constants_1 = require("../constants");
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
-        const resp = context.switchToHttp().getResponse();
+        const response = context.switchToHttp().getResponse();
         return next.handle().pipe((0, operators_1.map)((data) => {
-            if (data && data.stream) {
+            if (data?.stream) {
                 return data;
             }
             const res = { ...constants_1.DEFAULT_RESPONSE };
@@ -24,18 +24,16 @@ let TransformInterceptor = class TransformInterceptor {
                 res.responseBody = data.data;
             }
             else {
-                res.responseBody = !data.responseBody
-                    ? (0, class_transformer_1.instanceToPlain)(data)
-                    : data.responseBody;
+                res.responseBody = data?.responseBody ?? (0, class_transformer_1.instanceToPlain)(data);
             }
-            res.statusCode = context
-                .switchToHttp()
-                .getResponse()
-                .statusCode.toString();
+            res.statusCode = data.statusCode || response.statusCode;
             res.message = data.message || res.message;
-            const response = res;
-            resp.status(common_1.HttpStatus.OK);
-            return response;
+            if (data.error) {
+                res.error = data.error;
+                delete res.responseBody;
+            }
+            response.status(common_1.HttpStatus.OK);
+            return res;
         }));
     }
 };

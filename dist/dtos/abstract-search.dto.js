@@ -12,27 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractSearchDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
-const typeorm_1 = require("typeorm");
 class AbstractSearchDto {
     get page() {
         return this._page;
     }
     set page(value) {
-        this._page = value ?? 0;
+        this._page = Math.max(Number(value) || 1, 1);
     }
     get take() {
         return this._take;
     }
     set take(value) {
-        if (!value) {
-            this._take = 10;
-        }
-        else if (value > 100) {
-            this._take = 100;
-        }
-        else {
-            this._take = value;
-        }
+        this._take = Math.min(Math.max(Number(value) || 10, 1), 100);
     }
     constructor() {
         this._take = 10;
@@ -46,18 +37,19 @@ __decorate([
     __metadata("design:type", String)
 ], AbstractSearchDto.prototype, "q", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Number),
+    (0, class_validator_1.IsNumber)({}, { message: 'page must be a number' }),
+    (0, class_validator_1.Min)(1, { message: 'page must be at least 1' }),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], AbstractSearchDto.prototype, "page", null);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typeorm_1.Column)({ default: 10 }),
-    (0, class_validator_1.Max)(100),
     (0, class_transformer_1.Type)(() => Number),
+    (0, class_validator_1.IsNumber)({}, { message: 'take must be a number' }),
+    (0, class_validator_1.Min)(1, { message: 'take must be at least 1' }),
+    (0, class_validator_1.Max)(100, { message: 'take must not be greater than 100' }),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], AbstractSearchDto.prototype, "take", null);
@@ -67,9 +59,6 @@ __decorate([
 ], AbstractSearchDto.prototype, "orderBy", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsBoolean)(),
-    (0, class_transformer_1.Transform)(obj => {
-        return obj.value === 'true';
-    }),
+    (0, class_transformer_1.Transform)(({ value }) => value === 'true'),
     __metadata("design:type", Boolean)
 ], AbstractSearchDto.prototype, "exact", void 0);

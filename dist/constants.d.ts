@@ -1,4 +1,4 @@
-import { OkResponseDto } from './dtos/base-response.dto';
+import { BaseResponseDto } from './dtos/base-response.dto';
 export declare const banner = "\n\n\n_____   ___________________________________  __   _____________________ \n___  | / /__  __ __  ____/__    |__  __  / /   ___  /___    |__  __ )\n__   |/ /__  /_/ /_  __/  __  /| |_  / / /_  /    __  / __  /| |_  __  |\n_  /|  / _  _, _/_  /___  _  ___ |  /_/ /_  /     _  /___  ___ |  /_/ / \n/_/ |_/  /_/ |_| /_____/  /_/  |_/_____/ /_/      /_____/_/  |_/_____/  \n                                                                        \n\nPowered by NREADY LAB\n- Nam Le, leqnam@live.com (nam@nready.net)\n- https://nready.net\n\n\n";
 export declare const jwtConstants: {
     secret: string;
@@ -13,6 +13,9 @@ export declare const environment: {
     port: number;
     env: string;
     host: string;
+    iamURL: string;
+    loggingEnabled: string | boolean;
+    logLevel: string;
     rabbitmq: string;
     rabbitmqName: string;
     rabbitmqTtl: string | number;
@@ -35,7 +38,7 @@ export declare const REGEX_WHITESPACE_FIELD: RegExp;
 export declare const REGEX_NORMAL_FIELD: RegExp;
 export declare const REGEX_VIETNAMESE_PHONE: RegExp;
 export declare const DATE_FORMAT = "yyyy-MM-DDTHH:mm:ss.SSSZ";
-export declare const DEFAULT_RESPONSE: OkResponseDto;
+export declare const DEFAULT_RESPONSE: BaseResponseDto;
 export declare enum Sort {
     ASC = "ASC",
     DESC = "DESC"

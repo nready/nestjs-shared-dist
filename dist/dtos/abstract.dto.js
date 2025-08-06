@@ -10,56 +10,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractDto = void 0;
-const classes_1 = require("@automapper/classes");
+const class_transformer_1 = require("class-transformer");
 class AbstractDto {
     constructor(abstract) {
         if (abstract) {
-            this.createDate = abstract.createDate;
-            this.effectDate = abstract.effectDate;
-            this.inactiveDate = abstract.inactiveDate;
-            this.dateLastMaint = abstract.dateLastMaint;
-            this.version = abstract.version;
-            this.addedBy = abstract.addedBy;
-            this.editedBy = abstract.editedBy;
-            this.approvedBy = abstract.approvedBy;
-            this.note = abstract.addedBy;
+            Object.assign(this, abstract);
         }
     }
 }
 exports.AbstractDto = AbstractDto;
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", Date)
 ], AbstractDto.prototype, "createDate", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", Date)
 ], AbstractDto.prototype, "effectDate", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", Date)
 ], AbstractDto.prototype, "inactiveDate", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", Date)
 ], AbstractDto.prototype, "dateLastMaint", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", Number)
 ], AbstractDto.prototype, "version", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], AbstractDto.prototype, "addedBy", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], AbstractDto.prototype, "editedBy", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], AbstractDto.prototype, "approvedBy", void 0);
 __decorate([
-    (0, classes_1.AutoMap)(),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], AbstractDto.prototype, "note", void 0);

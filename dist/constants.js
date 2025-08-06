@@ -32,6 +32,10 @@ exports.environment = {
     port: Number(process.env.PORT) || 3000,
     env: process.env.NODE_ENV || 'development',
     host: '',
+    iamURL: (process.env.AUTH_BASE_URL || 'http://localhost:3000/portal/iam') +
+        (process.env.AUTH_INTROSPECT || '/v1/auth/token/introspect'),
+    loggingEnabled: process.env.LOGGING_ENABLE || true,
+    logLevel: process.env.LOG_LEVEL || 'debug',
     rabbitmq: process.env.RABBITMQ_URL || 'amqp://localhost:5672',
     rabbitmqName: process.env.RABBITMQ_QUEUE_NAME || 'RND',
     rabbitmqTtl: process.env.RABBITMQ_TTL || 3600000,

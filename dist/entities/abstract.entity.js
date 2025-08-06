@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractEntity = void 0;
-const classes_1 = require("@automapper/classes");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const typeorm_1 = require("typeorm");
@@ -18,6 +17,9 @@ const utils_service_1 = require("../services/utils.service");
 const helper_1 = require("../helper");
 class AbstractEntity {
     toDto(options) {
+        if (!this.dtoClass) {
+            return this;
+        }
         return utils_service_1.UtilsService.toDto(this.dtoClass, this, options);
     }
 }
@@ -31,7 +33,6 @@ __decorate([
         comment: 'Ngày giờ khởi tạo',
     }),
     (0, class_validator_1.IsOptional)(),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", Date)
 ], AbstractEntity.prototype, "createDate", void 0);
 __decorate([
@@ -43,11 +44,10 @@ __decorate([
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Date),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", Date)
 ], AbstractEntity.prototype, "effectDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)({
+    (0, typeorm_1.DeleteDateColumn)({
         name: 'inactiveDate',
         type: 'timestamp with time zone',
         nullable: true,
@@ -55,7 +55,6 @@ __decorate([
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Date),
-    (0, classes_1.AutoMap)(),
     (0, class_transformer_1.Transform)(date => (0, helper_1.transformEndOfDate)(date.value)),
     __metadata("design:type", Date)
 ], AbstractEntity.prototype, "inactiveDate", void 0);
@@ -68,7 +67,6 @@ __decorate([
         comment: 'Ngày giờ cập nhật',
     }),
     (0, class_validator_1.IsOptional)(),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", Date)
 ], AbstractEntity.prototype, "dateLastMaint", void 0);
 __decorate([
@@ -87,7 +85,6 @@ __decorate([
         nullable: true,
         comment: 'Được thêm bởi',
     }),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", String)
 ], AbstractEntity.prototype, "addedBy", void 0);
 __decorate([
@@ -97,16 +94,13 @@ __decorate([
         nullable: true,
         comment: 'Được chỉnh sửa bởi',
     }),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", String)
 ], AbstractEntity.prototype, "editedBy", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', name: 'approvedBy', nullable: true }),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", String)
 ], AbstractEntity.prototype, "approvedBy", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', name: 'note', nullable: true }),
-    (0, classes_1.AutoMap)(),
     __metadata("design:type", String)
 ], AbstractEntity.prototype, "note", void 0);

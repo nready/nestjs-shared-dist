@@ -15,12 +15,48 @@ const page_meta_dto_1 = require("../dtos/page-meta.dto");
 const search_result_dto_1 = require("../dtos/search-result.dto");
 const common_1 = require("@nestjs/common");
 let AbstractSearchService = class AbstractSearchService {
-    constructor(repository) {
-        this.repository = repository;
+    constructor(repo) {
+        this.repo = repo;
+        this.queryBuilder = ((model) => {
+            const queryable = {};
+            const excludeProperties = ['_page', '_take', '_orderBy', '_exact', '_q'];
+            Object.keys(model).forEach(key => {
+                const value = model[key];
+                if (excludeProperties.includes(key) ||
+                    value === null ||
+                    value === undefined ||
+                    value === '') {
+                    return;
+                }
+                if (typeof value === 'string') {
+                    if (model.exact) {
+                        queryable[key] = value;
+                    }
+                    else {
+                        queryable[key] = (0, typeorm_1.ILike)(`%${value}%`);
+                    }
+                }
+                else if (typeof value === 'number' || typeof value === 'boolean') {
+                    queryable[key] = value;
+                }
+                else if (value instanceof Date) {
+                    queryable[key] = value;
+                }
+            });
+            if (model.q && Object.keys(queryable).length === 0) {
+                if (model.exact) {
+                    queryable.fileName = model.q;
+                }
+                else {
+                    queryable.fileName = (0, typeorm_1.ILike)(`%${model.q}%`);
+                }
+            }
+            return queryable;
+        });
     }
     async paginate(model) {
-        const itemCount = await this.repository.countBy(this.queryBuilder(model));
-        const data = await this.repository.find({
+        const itemCount = await this.repo.countBy(this.queryBuilder(model));
+        const data = await this.repo.find({
             where: this.queryBuilder(model),
             skip: (model.page - 1) * model.take,
             take: model.take,

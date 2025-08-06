@@ -10,4 +10,12 @@ export declare class UtilsService {
     static encodeString(text: string): string;
     static mergeObject: (A: any, B: any) => any;
     static getLocaleDate: (isoString: string, timeZone?: string) => string;
+    static cleanNullObject: <T>(obj: any) => T;
+    static isNullOrUndefined: (value: any) => boolean;
+    static transformEndOfDate(date: Date | string): Date;
+    static isFutureDate(value: any): boolean;
+    static isActiveByDate(effectDate: Date, inactiveDate: Date): boolean;
+    static base64Encode(text: string): string;
+    static base64Decode(text: string): string;
+    static randomString: (length?: number) => string;
 }

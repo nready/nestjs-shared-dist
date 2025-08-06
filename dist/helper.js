@@ -9,6 +9,7 @@ exports.getTodayFormatYYYYDDMM = getTodayFormatYYYYDDMM;
 exports.hasCommonItemInArrays = hasCommonItemInArrays;
 exports.convertToAscii = convertToAscii;
 exports.isFutureDate = isFutureDate;
+exports.isActiveByDate = isActiveByDate;
 const fs_1 = require("fs");
 const swagger_1 = require("@nestjs/swagger");
 const constants_1 = require("./constants");
@@ -95,7 +96,7 @@ function convertToAscii(str) {
 const cleanNullObject = (obj) => {
     Object.keys(obj).forEach(key => {
         const typedKey = key;
-        if (obj[typedKey] === null) {
+        if (obj[typedKey] === null || obj[typedKey] === "" || obj[typedKey] === undefined) {
             delete obj[typedKey];
         }
     });
@@ -110,4 +111,10 @@ function isFutureDate(value) {
     const futureDate = transformEndOfDate(new Date(value));
     const currentDate = new Date();
     return futureDate.getTime() > currentDate.getTime();
+}
+function isActiveByDate(effectDate, inactiveDate) {
+    return !(0, exports.isNullable)(effectDate) &&
+        effectDate < new Date() &&
+        ((0, exports.isNullable)(inactiveDate) ||
+            inactiveDate > new Date());
 }
